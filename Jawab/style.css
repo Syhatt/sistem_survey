@@ -1,0 +1,40 @@
+/* style.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+h1 {
+    color: #333;
+}
+
+.survey-form {
+    margin-top: 30px;
+}
+
+.survey-form label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.survey-form input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.survey-form input[type="radio"] {
+    margin-right: 10px;
+}
+
+.submit-button {
+    margin-top: 20px;
+}
+
+.success-message {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #e0f2ff;
+    border-radius: 5px;
+}
