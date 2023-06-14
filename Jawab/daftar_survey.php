@@ -23,12 +23,40 @@ while ($row = mysqli_fetch_assoc($result)) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Daftar Survey</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
 </head>
 <body>
     <h1>Daftar Survey</h1>
-    <?php foreach($daftarSurvey as $survey) : ?>
-        <a href="jawab_survey.php?survey_id=<?= $survey["id"]; ?>"><?= $survey["title"]; ?></a>
-    <?php endforeach; ?>
+    <table>
+        <tr>
+            <th>No.</th>
+            <th>ID Survey</th>
+            <th>Judul Survey</th>
+            <th>Tindakan</th>
+        </tr>
+        <?php $no = 1; ?>
+        <?php foreach($daftarSurvey as $survey) : ?>
+            <tr>
+                <td><?= $no++; ?></td>
+                <td><?= $survey["id"]; ?></td>
+                <td><?= $survey["title"]; ?></td>
+                <td>
+                    <a href="jawab_survey.php?survey_id=<?= $survey["id"]; ?>">Jawab</a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
 </body>
 </html>

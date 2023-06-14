@@ -23,56 +23,57 @@ $query = "SELECT * FROM questions WHERE survey_id = $surveyId";
 $result = mysqli_query($conn, $query);
 $questions = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-// Mendapatkan skala Likert
-$query = "SELECT * FROM likertscale";
+// Mendapatkan jumlah respons untuk setiap skala likert
+$query = "SELECT question_id, response_value, COUNT(*) AS count FROM surveyresponses WHERE survey_id = $surveyId GROUP BY question_id, response_value";
 $result = mysqli_query($conn, $query);
-$likertScale = mysqli_fetch_all($result, MYSQLI_ASSOC);
+$responses = [];
+while ($row = mysqli_fetch_assoc($result)) {
+    $responses[$row['question_id']][$row['response_value']] = $row['count'];
+}
 
-// Mendapatkan jawaban-jawaban survei
-$query = "SELECT * FROM SurveyResponses WHERE survey_id = $surveyId";
-$result = mysqli_query($conn, $query);
-$responses = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
-// Menampilkan hasil survei
+// Menampilkan hasil survey
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
     <title>Hasil Survey</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 8px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
 </head>
 <body>
     <h1>Hasil Survey: <?php echo $survey['title']; ?></h1>
 
-    <h2>Pertanyaan-pertanyaan:</h2>
-    <ul>
+    <table>
+        <tr>
+            <th>Pertanyaan</th>
+            <th>Sangat Setuju</th>
+            <th>Setuju</th>
+            <th>Netral</th>
+            <th>Tidak Setuju</th>
+            <th>Sangat Tidak Setuju</th>
+        </tr>
         <?php foreach ($questions as $question) : ?>
-            <li><?php echo $question['question_text']; ?></li>
+            <tr>
+                <td><?php echo $question['question_text']; ?></td>
+                <td><?php echo isset($responses[$question['id']][1]) ? $responses[$question['id']][1] : 0; ?></td>
+                <td><?php echo isset($responses[$question['id']][2]) ? $responses[$question['id']][2] : 0; ?></td>
+                <td><?php echo isset($responses[$question['id']][3]) ? $responses[$question['id']][3] : 0; ?></td>
+                <td><?php echo isset($responses[$question['id']][4]) ? $responses[$question['id']][4] : 0; ?></td>
+                <td><?php echo isset($responses[$question['id']][5]) ? $responses[$question['id']][5] : 0; ?></td>
+            </tr>
         <?php endforeach; ?>
-    </ul>
-
-    <h2>Jawaban-jawaban:</h2>
-    <ul>
-        <?php foreach ($responses as $response) : ?>
-            <li>
-                <?php
-                    $questionId = $response['question_id'];
-                    $query = "SELECT question_text FROM Questions WHERE id = $questionId";
-                    $result = mysqli_query($conn, $query);
-                    $question = mysqli_fetch_assoc($result);
-                    $responseValue = $response['response_value'];
-                    $likertDescription = '';
-                    foreach ($likertScale as $likert) {
-                        if ($likert['scale_value'] == $responseValue) {
-                            $likertDescription = $likert['description'];
-                            break;
-                        }
-                    }
-                    echo $question['question_text'] . ': ' . $likertDescription;
-                ?>
-            </li>
-        <?php endforeach; ?>
-    </ul>
+    </table>
 
     <a href="../dashboard.html">Kembali ke Dashboard</a>
 </body>
