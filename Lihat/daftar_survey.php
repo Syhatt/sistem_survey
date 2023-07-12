@@ -1,6 +1,6 @@
-<?php 
+<?php
 // Koneksi ke database
-$servername ="localhost";
+$servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "sistem_survey";
@@ -19,6 +19,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -30,13 +31,15 @@ while ($row = mysqli_fetch_assoc($result)) {
             border-collapse: collapse;
         }
 
-        th, td {
+        th,
+        td {
             padding: 8px;
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
     </style>
 </head>
+
 <body>
     <h1>Daftar Survey</h1>
     <table>
@@ -47,7 +50,7 @@ while ($row = mysqli_fetch_assoc($result)) {
             <th>Tindakan</th>
         </tr>
         <?php $no = 1; ?>
-        <?php foreach($daftarSurvey as $survey) : ?>
+        <?php foreach ($daftarSurvey as $survey) : ?>
             <tr>
                 <td><?= $no++; ?></td>
                 <td><?= $survey["id"]; ?></td>
@@ -55,8 +58,15 @@ while ($row = mysqli_fetch_assoc($result)) {
                 <td>
                     <a href="lihat_survey.php?survey_id=<?= $survey["id"]; ?>">Lihat</a>
                 </td>
+                <td>
+                    <a href="edit_survey.php?survey_id=<?php echo $survey['id']; ?>">Edit</a>
+                </td>
+                <td>
+                    <a href="hapus_survey.php?survey_id=<?php echo $survey['id']; ?>">Hapus</a>
+                </td>
             </tr>
         <?php endforeach; ?>
     </table>
 </body>
+
 </html>
